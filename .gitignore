@@ -1,0 +1,16 @@
+# Terraform generated files
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Environment/secrets
+.env
+.env.*
