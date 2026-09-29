@@ -26,10 +26,7 @@ resource "aws_iam_role" "github_actions" {
         Condition = {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          }
-
-          StringLike = {
-            "token.actions.githubusercontent.com:sub" = "repo:SMAN04/devops-status-api:ref:refs/heads/main"
+            "token.actions.githubusercontent.com:sub" = "repo:SMAN04@OWNER_ID/devops-status-api@REPO_ID:ref:refs/heads/main"
           }
         }
       }
@@ -38,35 +35,35 @@ resource "aws_iam_role" "github_actions" {
 }
 
 resource "aws_iam_role_policy" "github_ecr" {
-    name = "github-actions-ecr-policy"
-    role = aws_iam_role.github_actions.id
+  name = "github-actions-ecr-policy"
+  role = aws_iam_role.github_actions.id
 
-    policy = jsonencode({
-        Version = "2012-10-17"
-        Statement = [
-            {
-                Effect = "Allow"
-                Action = [
-                    "ecr:GetAuthorizationToken"
-                ]
-
-                Resource = "*"
-            },
-            {
-            Effect = "Allow"
-
-            Action = [
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-                "ecr:InitiateLayerUpload",
-                "ecr:UploadLayerPart",
-                "ecr:CompleteLayerUpload",
-                "ecr:PutImage"
-                ]
-                Resource = aws_ecr_repository.app.arn
-                
-            }
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken"
         ]
-    })
+
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:InitiateLayerUpload",
+          "ecr:UploadLayerPart",
+          "ecr:CompleteLayerUpload",
+          "ecr:PutImage"
+        ]
+        Resource = aws_ecr_repository.app.arn
+
+      }
+    ]
+  })
 }
