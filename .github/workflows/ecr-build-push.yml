@@ -49,3 +49,17 @@ jobs:
             docker push \
               ${{ steps.login-to-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v3
+
+        - name: Terraform Init
+          working-directory: terraform
+          run: terraform init
+
+        - name: Terraform Validate
+          working-directory: terraform
+          run: terraform validate
+
+        - name: Terraform Plan
+          working-directory: terraform
+          run: terraform plan
