@@ -13,4 +13,8 @@ venv/
 
 # Environment/secrets
 .env
-.env.*
+.env.*,
+
+**/.terraform/*
+*.tfstate
+*.tfstate.*

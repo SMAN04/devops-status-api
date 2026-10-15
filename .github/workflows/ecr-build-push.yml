@@ -62,4 +62,4 @@ jobs:
 
         - name: Terraform Plan
           working-directory: terraform
-          run: terraform plan
+          run: terraform plan -var="image_tag=${{ github.sha }}"
