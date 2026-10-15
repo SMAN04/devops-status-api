@@ -68,3 +68,76 @@ resource "aws_iam_role_policy" "github_ecr" {
     ]
   })
 }
+
+resource "aws_iam_role_policy" "github_terraform" {
+  name = "github-actions-terraform-policy"
+  role = aws_iam_role.github_actions.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+
+    Statement = [
+      {
+        Effect = "Allow"
+
+        Action = [
+          "ec2:*",
+          "ecs:*",
+          "elasticloadbalancing:*",
+          "ecr:*"
+        ]
+
+        Resource = "*"
+      },
+
+      {
+        Effect = "Allow"
+
+        Action = [
+          "iam:CreateRole",
+          "iam:GetRole",
+          "iam:DeleteRole",
+          "iam:UpdateAssumeRolePolicy",
+          "iam:AttachRolePolicy",
+          "iam:DetachRolePolicy",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListRolePolicies",
+          "iam:GetRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:TagRole",
+          "iam:UntagRole",
+          "iam:PassRole"
+        ]
+
+        Resource = "*"
+      },
+
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:ListBucket",
+          "s3:GetBucketLocation"
+        ]
+
+        Resource = "arn:aws:s3:::${var.state_bucket_name}"
+      },
+
+      {
+        Effect = "Allow"
+
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject"
+        ]
+
+        Resource = [
+          "arn:aws:s3:::${var.state_bucket_name}/devops-status-api/terraform.tfstate",
+          "arn:aws:s3:::${var.state_bucket_name}/devops-status-api/terraform.tfstate.tflock"
+        ]
+      }
+    ]
+  })
+}
