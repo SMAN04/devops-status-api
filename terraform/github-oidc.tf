@@ -107,7 +107,9 @@ resource "aws_iam_role_policy" "github_terraform" {
           "iam:DeleteRolePolicy",
           "iam:TagRole",
           "iam:UntagRole",
-          "iam:PassRole"
+          "iam:PassRole",
+          "iam:GetOpenIDConnectProvider",
+          "iam:ListOpenIDConnectProviders"
         ]
 
         Resource = "*"

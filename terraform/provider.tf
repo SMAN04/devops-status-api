@@ -10,9 +10,9 @@ terraform {
 
   backend "s3" {
 
-    bucket = "devops-status-api-terraform-state-639914974934"
-    key    = "devops-status-api/terraform.tfstate"
-    region = "eu-north-1"
+    bucket       = "devops-status-api-terraform-state-639914974934"
+    key          = "devops-status-api/terraform.tfstate"
+    region       = "eu-north-1"
     use_lockfile = true
   }
 }
