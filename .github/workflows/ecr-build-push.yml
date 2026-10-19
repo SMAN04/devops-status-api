@@ -63,3 +63,8 @@ jobs:
         - name: Terraform Plan
           working-directory: terraform
           run: terraform plan -var="image_tag=${{ github.sha }}"
+
+        - name: Terraform Apply
+          if: github.event_name == 'workflow_dispatch'
+          working-directory: terraform
+          run: terraform apply -auto-approve tfplan
