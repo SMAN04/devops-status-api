@@ -68,3 +68,24 @@ jobs:
           if: github.event_name == 'workflow_dispatch'
           working-directory: terraform
           run: terraform apply -auto-approve tfplan
+
+        - name: Health Check
+          if: github.event_name == 'workflow_dispatch' && success()
+          working-directory: terraform
+          run: |
+            ALB_DNS=$(terraform output -raw alb_dns_name)
+
+            echo "Checking http://${ALB_DNS}/health"
+
+            for i in {1..20}; do
+              if curl -fsS "http://${ALB_DNS}/health"; then
+                echo "Application is healthy"
+                exit 0
+              fi
+
+              echo "Application not ready yet. Retrying..."
+              sleep 15
+            done
+
+            echo "Health check failed"
+            exit 1
