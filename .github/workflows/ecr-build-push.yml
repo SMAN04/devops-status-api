@@ -62,7 +62,7 @@ jobs:
 
         - name: Terraform Plan
           working-directory: terraform
-          run: terraform plan -var="image_tag=${{ github.sha }}"
+          run: terraform plan -out=tfplan -var="image_tag=${{ github.sha }}"
 
         - name: Terraform Apply
           if: github.event_name == 'workflow_dispatch'
